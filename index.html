@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I'm Sorry</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #f8bbd0, #bbdefb);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            overflow: hidden;
+        }
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            z-index: 1;
+        }
+        h1 {
+            color: #e74c3c;
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+        }
+        p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            position: relative;
+            min-height: 60px;
+        }
+        button {
+            padding: 12px 35px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .yes-btn {
+            background: linear-gradient(to right, #2ecc71, #27ae60);
+            color: white;
+        }
+        .no-btn {
+            background: linear-gradient(to right, #e74c3c, #c0392b);
+            color: white;
+        }
+        .yes-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        .no-btn:hover {
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        .hidden {
+            display: none;
+        }
+        .heart {
+            color: #e74c3c;
+            font-size: 28px;
+            display: inline-block;
+        }
+        .moving-no-btn {
+            position: absolute;
+            transition: all 0.2s;
+        }
+        .emoji {
+            font-size: 2rem;
+            margin: 0 5px;
+            display: inline-block;
+        }
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        .hearts-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .heart-bg {
+            position: absolute;
+            animation: fall linear infinite, sway ease-in-out infinite alternate;
+            color: rgba(231, 76, 60, 0.3);
+        }
+        @keyframes fall {
+            to { transform: translateY(100vh); }
+        }
+        @keyframes sway {
+            from { transform: translateX(-10px); }
+            to { transform: translateX(10px); }
+        }
+        .final-container {
+            position: relative;
+            overflow: hidden;
+        }
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f0f;
+            opacity: 0.7;
+            position: absolute;
+            animation: confetti-fall linear infinite;
+        }
+        @keyframes confetti-fall {
+            to { transform: translateY(100vh) rotate(360deg); }
+        }
+        .image-container {
+            margin: 20px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+        img:hover {
+            transform: scale(1.02);
+        }
+        
+        /* Beautiful heart animation */
+        .heart-animation-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .animated-heart {
+            position: absolute;
+            font-size: 24px;
+            opacity: 0;
+            animation: float-up 4s ease-in-out forwards;
+            transform-origin: center;
+        }
+        
+        @keyframes float-up {
+            0% {
+                transform: translateY(20px) scale(0.5);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            70% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100px) scale(1.2);
+                opacity: 0;
+            }
+        }
+        
+        .thank-you-text {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .thank-you-text::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(to right, #e74c3c, #ff79c6);
+            animation: underline 1.5s ease-in-out forwards 0.5s;
+        }
+        
+        @keyframes underline {
+            to { width: 100%; }
+        }
+        
+        .heart-burst {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .burst-heart {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            animation: burst 3s ease-out infinite;
+        }
+        
+        @keyframes burst {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(2);
+                opacity: 0;
+            }
+        }
+        
+        .dancing-hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+        
+        .dancing-heart {
+            position: absolute;
+            animation: dance 4s ease-in-out infinite;
+        }
+        
+        @keyframes dance {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            25% {
+                transform: translateY(-20px) rotate(-10deg);
+            }
+            50% {
+                transform: translateY(0) rotate(0deg);
+            }
+            75% {
+                transform: translateY(-10px) rotate(10deg);
+            }
+        }
+        
+        /* Ensure proper button positioning */
+        #page3 .buttons {
+            height: 150px;
+            position: relative;
+        }
+        
+        /* For mobile touch events */
+        .no-btn {
+            touch-action: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts-bg" id="heartsBg"></div>
+    
+    <div class="container animate__animated animate__fadeIn" id="page1">
+        <span class="emoji floating">💔</span>
+        <h1>I'm Sorry</h1>
+        <p>I made a mistake and I truly regret it..Ik mujhe esa nhi krna chahiye tha.. <span class="emoji">😔</span></p>
+        <div class="image-container">
+            <!-- <img src="/api/placeholder/400/200" alt="Sorry" /> -->
+        </div>
+        <p>Please let things be the same between us..don't chane it.. <span class="emoji">🥺</span></p>
+        <div class="buttons">
+            <button class="no-btn" onclick="showPage('page2')">No</button>
+            <button class="yes-btn" onclick="showFinalPage()">Okay</button>
+        </div>
+    </div>
+
+    <div class="container hidden animate__animated animate__fadeIn" id="page2">
+        <span class="emoji floating">😭</span>
+        <h1>I'm Really Sorry</h1>
+        <p>Please think again. I promise I'll do better <span class="emoji">❤️‍🩹</span></p>
+        <div class="image-container">
+            <!-- <img src="/api/placeholder/400/200" alt="Please Forgive" /> -->
+        </div>
+        <p>Can you please give me a chance..? <span class="emoji">🥺</span></p>
+        <div class="buttons">
+            <button class="no-btn" onclick="showPage('page3')">No</button>
+            <button class="yes-btn" onclick="showFinalPage()">Okay</button>
+        </div>
+    </div>
+
+    <div class="container hidden animate__animated animate__fadeIn" id="page3">
+        <span class="emoji floating">💝</span>
+        <h1>Please ek aur baar socho na...🥺</h1>
+        <p>I can't live without you...😞 <span class="emoji">💌</span></p>
+        <div class="image-container">
+            <!-- <img src="/api/placeholder/400/200" alt="One More Chance" /> -->
+        </div>
+        <p>Give me another chance? <span class="emoji">🌹</span></p>
+        <div class="buttons">
+            <button class="no-btn moving-no-btn" id="movingNoBtn">No</button>
+            <button class="yes-btn" onclick="showFinalPage()">Yes</button>
+        </div>
+    </div>
+
+    <div class="container hidden animate__animated animate__fadeIn final-container" id="finalPage">
+        <div class="dancing-hearts" id="dancingHearts"></div>
+        <div class="heart-animation-container" id="heartAnimationContainer"></div>
+        
+        <span class="emoji floating">✨</span>
+        <h1 class="thank-you-text animate__animated animate__fadeIn">Thank You So Much!</h1>
+        
+        <p>I Love You 
+            <span class="heart-burst">
+                <span class="heart">❤️</span>
+                <span class="burst-heart">❤️</span>
+                <span class="burst-heart" style="animation-delay: 0.3s">❤️</span>
+                <span class="burst-heart" style="animation-delay: 0.6s">❤️</span>
+            </span>
+        </p>
+        
+        <div class="image-container">
+            <img src="/Ayu...jpg " alt="Love" />
+        </div>
+        <p>You are my everything... <span class="emoji">💖</span></p>
+        <p class="animate__animated animate__fadeIn animate__delay-1s">You belong to me... <span class="emoji">💞</span></p>
+    </div>
+
+    <script>
+        // Create floating hearts background
+        function createHearts() {
+            const heartsContainer = document.getElementById('heartsBg');
+            const heartSymbols = ['❤️', '💕', '💓', '💗', '💖', '💘'];
+            
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart-bg';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                heart.style.animationDuration = (Math.random() * 15 + 5) + 's';
+                heart.style.animationDelay = (Math.random() * 5) + 's';
+                heart.innerHTML = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                heartsContainer.appendChild(heart);
+            }
+        }
+
+        // Create rising hearts animation for final page
+        function createRisingHearts() {
+            const container = document.getElementById('heartAnimationContainer');
+            const heartSymbols = ['❤️', '💕', '💓', '💗', '💖', '💘', '💝', '❣️', '💟'];
+            
+            // Clear any existing hearts
+            container.innerHTML = '';
+            
+            // Create new rising hearts periodically
+            const createHeart = () => {
+                const heart = document.createElement('div');
+                heart.className = 'animated-heart';
+                heart.style.left = Math.random() * 80 + 10 + '%';
+                heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                heart.style.animationDelay = (Math.random() * 0.5) + 's';
+                heart.innerHTML = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                container.appendChild(heart);
+                
+                // Remove the heart after animation completes
+                setTimeout(() => {
+                    heart.remove();
+                }, 4000);
+            };
+            
+            // Create initial hearts
+            for (let i = 0; i < 10; i++) {
+                setTimeout(createHeart, i * 300);
+            }
+            
+            // Continue creating hearts
+            setInterval(createHeart, 500);
+        }
+        
+        // Create dancing hearts for final page
+        function createDancingHearts() {
+            const container = document.getElementById('dancingHearts');
+            const heartSymbols = ['❤️', '💕', '💓', '💗', '💖', '💘'];
+            
+            // Clear existing hearts
+            container.innerHTML = '';
+            
+            // Create dancing hearts
+            for (let i = 0; i < 8; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'dancing-heart';
+                heart.style.left = (i * 12 + 5) + '%';
+                heart.style.top = '80%';
+                heart.style.fontSize = (Math.random() * 10 + 15) + 'px';
+                heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+                heart.style.animationDelay = (Math.random() * 2) + 's';
+                heart.innerHTML = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                container.appendChild(heart);
+            }
+        }
+
+        function showPage(pageId) {
+            document.querySelectorAll('.container').forEach(page => {
+                page.classList.add('hidden');
+            });
+            document.getElementById(pageId).classList.remove('hidden');
+            
+            // Position the moving button when page3 is shown
+            if (pageId === 'page3') {
+                positionMovingButton();
+            }
+        }
+
+        function showFinalPage() {
+            document.querySelectorAll('.container').forEach(page => {
+                page.classList.add('hidden');
+            });
+            document.getElementById('finalPage').classList.remove('hidden');
+            createRisingHearts();
+            createDancingHearts();
+        }
+
+        // Initial positioning of the moving button
+        function positionMovingButton() {
+            const btn = document.getElementById('movingNoBtn');
+            const container = document.getElementById('page3');
+            const buttonsContainer = container.querySelector('.buttons');
+            
+            // Set initial position for the No button (left side of container)
+            btn.style.position = "absolute";
+            btn.style.left = "20%";
+            btn.style.top = "0";
+            btn.style.transform = "translateX(-50%)";
+        }
+
+        function moveButton() {
+            const btn = document.getElementById('movingNoBtn');
+            const container = document.getElementById('page3');
+            const containerWidth = container.offsetWidth - 120;
+            const containerHeight = 120;
+            
+            const randomX = Math.floor(Math.random() * containerWidth);
+            const randomY = Math.floor(Math.random() * containerHeight);
+            
+            btn.style.position = "absolute";
+            btn.style.left = randomX + "px";
+            btn.style.top = randomY + "px";
+        }
+
+        // Event handlers for both mouse and touch events
+        function setupButtonEvents() {
+            const btn = document.getElementById('movingNoBtn');
+            
+            // Mouse events
+            btn.addEventListener('mouseover', moveButton);
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                moveButton();
+            });
+            
+            // Touch events for mobile
+            btn.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                moveButton();
+            });
+            
+            btn.addEventListener('touchmove', function(e) {
+                e.preventDefault();
+                moveButton();
+            });
+        }
+
+        // Initialize on load
+        window.onload = function() {
+            createHearts();
+            setupButtonEvents();
+        };
+    </script>
+</body>
+</html>
